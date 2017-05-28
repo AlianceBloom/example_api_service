@@ -7,14 +7,14 @@ import (
 	"log"
 )
 
-type resultTournamentParams struct {
+type ResultTournamentParams struct {
 	TournamentId string `binding:"required"`
 	PlayerId string `binding:"required"`
 }
 
 type NewPlayerParams struct {
-	PlayerID string `binding:"required"`
-	Points int `binding:"required"`
+	PlayerId string `binding:"required"`
+	Points   int `binding:"required"`
 }
 
 type PlayerManipulationParams struct {
@@ -78,7 +78,7 @@ func newUserEndpoint(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{})
 		return
 	}
-	if _, err := gameEngine.AddPlayer(params.Points, params.PlayerID); err != nil {
+	if _, err := gameEngine.AddPlayer(params.Points, params.PlayerId); err != nil {
 		log.Println("Errors", err)
 		c.JSON(http.StatusMethodNotAllowed, gin.H{})
 		return
@@ -117,7 +117,7 @@ func fundEndpoint(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{})
 		return
 	}
-	log.Println(params)
+
 	player := game.FindPlayer(params.PlayerId)
 	if player == nil {
 		c.JSON(http.StatusNotFound, gin.H{})
@@ -139,8 +139,6 @@ func announceTournamentEndpoint(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{})
 		return
 	}
-
-	log.Println(params)
 
 	_, err := gameEngine.NewTournament(params.TournamentId, params.Deposit)
 
@@ -180,7 +178,7 @@ func joinTournamentEndpoint(c *gin.Context) {
 
 
 func resultTournamentEndpoint(c *gin.Context) {
-	var params resultTournamentParams
+	var params ResultTournamentParams
 	if c.Bind(&params) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{})
 		return
