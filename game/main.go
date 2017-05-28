@@ -15,7 +15,6 @@ type Game struct {
 func InitializeGame(DB *gorm.DB) *Game {
 	Database = DB
 	game := Game{}
-	Database.DropTableIfExists(Player{}, Tournament{}, Booking{}, TournamentWinner{})
 	Database.AutoMigrate(Player{}, Tournament{}, Booking{}, TournamentWinner{})
 
 	Database.FirstOrCreate(&Player{}, &Player{ Uid: "P1", Points: 0})

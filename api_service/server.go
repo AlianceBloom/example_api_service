@@ -27,7 +27,7 @@ type NewTournamentParams struct {
 	Deposit int `binding:"required"`
 }
 
-type joinTournamentParams struct {
+type JoinTournamentParams struct {
 	TournamentId string `binding:"required"`
 	PlayerId string `binding:"required"`
 	BackerId []string
@@ -157,7 +157,7 @@ func announceTournamentEndpoint(c *gin.Context) {
 
 
 func joinTournamentEndpoint(c *gin.Context) {
-	var params joinTournamentParams
+	var params JoinTournamentParams
 	if c.Bind(&params) != nil {
 		c.JSON(http.StatusBadRequest, gin.H{})
 		return
